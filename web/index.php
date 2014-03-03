@@ -4,7 +4,7 @@
 	<title>Points of interest</title>
 	<link rel="shortcut icon" href="/favicon.ico?v=2" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico?v=2" type="image/x-icon">
-	<link rel="stylesheet" type="text/css" href="./web/main.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 	<div class="homepage">
