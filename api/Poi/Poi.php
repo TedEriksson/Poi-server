@@ -15,7 +15,7 @@ class Poi {
 			$statement = $this->pdo->prepare("SELECT * FROM points");
 			$statement->execute();
 		} else {
-			$statement = $this->pdo->prepare("SELECT * FROM points WHERE point_id = :id");
+			$statement = $this->pdo->prepare("SELECT * FROM points INNER JOIN users ON users.user_id=points.owner_id WHERE point_id = :id");
 			$statement->execute(array('id' => $id));
 			$statement2 = $this->pdo->prepare("SELECT * FROM parts WHERE point_id = :id");
 			$statement2->execute(array('id' => $id));
