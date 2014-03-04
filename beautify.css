@@ -1,0 +1,137 @@
+body {
+	margin: 0;
+	font-family: 'Lato', sans-serif;
+}
+
+.container {
+	width: 100%;
+	min-height: 600px;
+	overflow: hidden;
+	text-align: center;
+}	
+	
+.inner {
+	display: inline-block;
+	width: 900px;
+}
+
+.type1 {
+	background-color: #9FD1D0;
+}
+
+.type2 {
+	background-color: #EEE;
+}
+
+	.logo.main {
+		z-index: 1;
+		position: relative;
+		display: inline-block;
+		width: 700px;
+		height: 400px;
+		top: 100px;
+		background: url("res/img/poi_logo.png") no-repeat;
+		background-size: 100%;
+		background-position: center;
+		animation: logoMove 2s;
+		-webkit-animation: logoMove 2s;
+	}
+
+h1 {
+	font-weight: 100;
+	font-size: 60px;
+}
+
+h2 {
+	font-weight: 200;
+	font-size: 40px;	
+}
+
+p {
+	font-size: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+img {
+	position: relative;
+	text-align: center;
+	max-height: 400px; 
+	box-shadow: 0 0 15px rgba(0,0,0,0.9);
+	-webkit-animation: hoverLight 1.5s ease-in-out infinite alternate;
+}
+
+footer {
+	bottom: 5px;
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+	footer > .inner div {
+		float: right;
+	}
+
+	footer > .inner a {
+		float: left;
+		padding-right: 20px;
+	}
+
+.step {
+	text-align: center;
+	position: relative;
+	display: inline-block;
+	width: 150px;
+	padding: 30px;
+	margin: 30px;
+	font-size: 25px;
+	text-decoration: none;
+	top: 0;
+	color: black;
+	box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
+	-webkit-transition:top 0.3s, box-shadow 0.3s;
+}
+
+	.step:hover {
+		top: -5px;
+		box-shadow: 0px 10px 15px rgba(0,0,0,0.2);
+	}
+
+@media (max-width: 900px) {
+	.inner {
+		width: 100%;
+	}
+}
+
+@keyframes logoMove
+{
+from {
+	width: 700px;
+}
+to {
+	width: 200px;
+}
+}
+
+@-webkit-keyframes logoMove /* Safari and Chrome */
+{
+from {
+	top: 600px;
+}
+to {
+	top:100px;
+}
+}
+
+@-webkit-keyframes hoverLight /* Safari and Chrome */
+{
+from {
+	top: 10px;
+	box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
+}
+to {
+	top:0px;
+	box-shadow: 0px 10px 15px rgba(0,0,0,0.2);
+}
+}
