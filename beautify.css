@@ -102,6 +102,11 @@ footer {
 	.inner {
 		width: 100%;
 	}
+
+	footer > .inner a, footer > .inner div {
+		float: none;
+		padding: 20px;
+	}
 }
 
 @keyframes logoMove
