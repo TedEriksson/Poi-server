@@ -47,8 +47,14 @@ class Poi {
 		}
 	}
 
-	public function insert($vals, $token = null) {
+	public function insert($vals) {
 		$vals = json_decode($vals, true);
+
+		//Is Authenticated user
+		if(!validateUser($vals["access_token"],$vals["owner_id"])) return -1;
+
+		unset($vals["access_token"]);
+		
 		if(isset($vals["point_id"])) unset($vals["point_id"]);
 		if(isset($vals["parts"])) unset($vals["parts"]);
 		$insertString = "INSERT INTO points ";
@@ -130,5 +136,15 @@ class Poi {
 			return json_encode(array('points' => array()));
 		}
 	} 
+
+	private function validateUser($accessToken, $owner_id) {
+		$url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=".$access_token;
+		$ch = curl_init();
+		curl_setopt($ch,CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$content = curl_exec($ch);
+		$array = json_decode($content, true);
+		return ($array["user_id"] == $owner_id);
+	}
 }
 ?>
