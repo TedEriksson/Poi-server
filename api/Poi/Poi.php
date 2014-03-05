@@ -51,10 +51,10 @@ class Poi {
 		$vals = json_decode($vals, true);
 
 		//Is Authenticated user
-		if(!validateUser($vals["access_token"],$vals["owner_id"])) return -1;
+		if(!$this->validateUser($vals["access_token"],$vals["owner_id"])) return -1;
 
 		unset($vals["access_token"]);
-		
+
 		if(isset($vals["point_id"])) unset($vals["point_id"]);
 		if(isset($vals["parts"])) unset($vals["parts"]);
 		$insertString = "INSERT INTO points ";
