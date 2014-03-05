@@ -51,7 +51,7 @@ class Poi {
 		$vals = json_decode($vals, true);
 
 		//Is Authenticated user
-		if(isset($vals["access_token"]) && isset($vals["owner_id"]) && !$this->validateUser($vals["access_token"],$vals["owner_id"])) return -1;
+		if(!isset($vals["access_token"]) || !isset($vals["owner_id"]) || !$this->validateUser($vals["access_token"],$vals["owner_id"])) return -1;
 
 		unset($vals["access_token"]);
 
