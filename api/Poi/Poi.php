@@ -143,6 +143,7 @@ class Poi {
 		curl_setopt($ch,CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$content = curl_exec($ch);
+		var_dump($content);
 		$array = json_decode($content, true);
 		return ($array["user_id"] == $owner_id);
 	}
