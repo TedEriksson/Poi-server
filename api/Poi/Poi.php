@@ -50,6 +50,7 @@ class Poi {
 	public function insert($vals, $token = null) {
 		$vals = json_decode($vals, true);
 		if(isset($vals["point_id"])) unset($vals["point_id"]);
+		if(isset($vals["parts"])) unset($vals["parts"]);
 		$insertString = "INSERT INTO points ";
 		$first = true;
 		$keys = "";
