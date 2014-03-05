@@ -138,7 +138,7 @@ class Poi {
 	} 
 
 	private function validateUser($accessToken, $owner_id) {
-		$url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=".$access_token;
+		$url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=".$accessToken;
 		echo $url;
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL, $url);
