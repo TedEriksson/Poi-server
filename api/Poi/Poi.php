@@ -138,14 +138,14 @@ class Poi {
 	} 
 
 	private function validateUser($accessToken, $owner_id) {
-		$url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=".$accessToken;
+		$url = "https://www.googleapis.com/plus/v1/people/me?access_token=".$accessToken;
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$content = curl_exec($ch);
 		var_dump($content);
 		$array = json_decode($content, true);
-		return ($array["user_id"] == $owner_id);
+		return ($array["id"] == $owner_id);
 	}
 }
 ?>
