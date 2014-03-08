@@ -32,7 +32,6 @@
 				if ($this->json == null) {
 					if (isset($this->segs[1]) || $this->segs[0] == "users") {
 						if($this->segs[0] == "users") {
-							echo "USERS";
 							$this->request = new Get(null, $this->segs[1]);
 						} else {
 							$this->request = new Get($this->segs[1]);
@@ -73,13 +72,15 @@
 	class Get implements Request {
 		private $poi;
 		private $id = null;
+		private $user = null;
 
-		function __construct($id) {
+		function __construct($id = null, $user = null) {
 			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
 			$this->id = $id;
 		}
 
 		public function performRequest() {
+			if($user != null) return $this->poi->get(null, $this->user);
 			return $this->poi->get($this->id);
 		}
 
