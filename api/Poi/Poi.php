@@ -85,7 +85,7 @@ class Poi {
 			$insertId = $this->pdo->lastInsertId('point_id');
 			if($parts != null) {
 				foreach ($parts as $part) {
-					$pdoVals = new array();
+					$pdoVals = array();
 					if(isset($part["part_id"])) unset($part["part_id"]);
 					$part["point_id"] = $insertId;
 					$insertString = "INSERT INTO parts ";
