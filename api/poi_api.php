@@ -32,6 +32,7 @@
 				if ($this->json == null) {
 					if (isset($this->segs[1]) || $this->segs[0] == "users") {
 						if($this->segs[0] == "users") {
+							echo "USERS";
 							$this->request = new Get(null, $this->segs[1]);
 						} else {
 							$this->request = new Get($this->segs[1]);
