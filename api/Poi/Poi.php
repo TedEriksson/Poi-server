@@ -14,18 +14,18 @@ class Poi {
 		if($id == null) {
 			$get = "SELECT * FROM points";
 			if($user != null) {
-				$get .= " WHERE owner_id = :user";
+				$get = "SELECT * FROM points WHERE owner_id = :user";
 				$statement = $this->pdo->prepare($get);
-				$statement->execute(array('user' => $user));
+				$statement->execute(array(':user' => $user));
 			} else {
 				$statement = $this->pdo->prepare($get);
 				$statement->execute();
 			}
 		} else {
 			$statement = $this->pdo->prepare("SELECT * FROM points WHERE point_id = :id");
-			$statement->execute(array('id' => $id));
+			$statement->execute(array(':id' => $id));
 			$statement2 = $this->pdo->prepare("SELECT * FROM parts WHERE point_id = :id");
-			$statement2->execute(array('id' => $id));
+			$statement2->execute(array(':id' => $id));
 		}
 		$results = $statement->fetchAll(PDO::FETCH_ASSOC);
 		$results = array('points' => $results);

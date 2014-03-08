@@ -31,8 +31,11 @@
 			if (isset($this->segs[0]) && ($this->segs[0] == "points" || $this->segs[0] == "users") && !isset($this->segs[2])) {
 				if ($this->json == null) {
 					if (isset($this->segs[1]) || $this->segs[0] == "users") {
-						if($this->segs[0] == "users") $this->request = new Get(null, $this->segs[1]);
-						else $this->request = new Get($this->segs[1]);
+						if($this->segs[0] == "users") {
+							$this->request = new Get(null, $this->segs[1]);
+						} else {
+							$this->request = new Get($this->segs[1]);
+						}
 					} else {
 						$this->request = new Search($this->where);
 					}
