@@ -12,8 +12,10 @@ class Poi {
 
 	public function get($id = null, $user = null) {
 		if($id == null) {
+			echo "-------all-------";
 			$get = "SELECT * FROM points";
 			if($user != null) {
+				echo "-------users-------";
 				$get = "SELECT * FROM points WHERE owner_id = :user";
 				$statement = $this->pdo->prepare($get);
 				$statement->execute(array(':user' => $user));
