@@ -56,7 +56,11 @@ class Poi {
 		unset($vals["access_token"]);
 
 		if(isset($vals["point_id"])) unset($vals["point_id"]);
-		if(isset($vals["parts"])) unset($vals["parts"]);
+		$parts = null;
+		if(isset($vals["parts"])) {
+			$parts = $vals["parts"];
+			unset($vals["parts"]);
+		}
 		$insertString = "INSERT INTO points ";
 		$first = true;
 		$keys = "";
@@ -77,7 +81,13 @@ class Poi {
 
 		//die($insertString . "     " . var_dump($pdoVals));
 		if($statement->execute($pdoVals)) {
-			return $this->pdo->lastInsertId('point_id');
+			$insertId = $this->pdo->lastInsertId('point_id');
+			if($parts != null) {
+				foreach ($parts as $key) {
+					echo $key;
+				}
+			}
+			return $insertId; 
 		} else {
 			return -1;
 		}
