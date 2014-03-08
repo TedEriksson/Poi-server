@@ -83,8 +83,10 @@ class Poi {
 		if($statement->execute($pdoVals)) {
 			$insertId = $this->pdo->lastInsertId('point_id');
 			if($parts != null) {
-				foreach ($parts as $key) {
-					echo $key;
+				foreach ($parts as $part) {
+					foreach ($part as $key => $value) {
+						echo $key . " : " $value ."<br>";
+					}
 				}
 			}
 			return $insertId; 
