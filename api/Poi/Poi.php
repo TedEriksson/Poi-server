@@ -81,14 +81,36 @@ class Poi {
 
 		//die($insertString . "     " . var_dump($pdoVals));
 		if($statement->execute($pdoVals)) {
+			$error = false;
 			$insertId = $this->pdo->lastInsertId('point_id');
 			if($parts != null) {
 				foreach ($parts as $part) {
+					$pdoVals = new array();
+					if(isset($part["part_id"])) unset($part["part_id"]);
+					$part["point_id"] = $insertId;
+					$insertString = "INSERT INTO parts ";
+					$first = true;
+					$keys = "";
+					$values = "";
 					foreach ($part as $key => $value) {
-						echo $key . " : " . $value ."<br>";
+						if($first) {
+							$keys .= "$key";
+							$values .= ":$key";
+							$first = false;
+						} else {
+							$keys .= ", $key";
+							$values .= ", :$key";
+						}
+						$pdoVals[":$key"] = urldecode($value);
+					}
+					$insertString .= "($keys) VALUES ($values)";
+					$statement = $this->pdo->prepare($insertString);
+					if(!$statement->execute($pdoVals)) {
+						$error = true;
 					}
 				}
 			}
+			if ($error) return -1;
 			return $insertId; 
 		} else {
 			return -1;
