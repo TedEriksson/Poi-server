@@ -85,7 +85,7 @@ class Poi {
 			if($parts != null) {
 				foreach ($parts as $part) {
 					foreach ($part as $key => $value) {
-						echo $key . " : " $value ."<br>";
+						echo $key . " : " . $value ."<br>";
 					}
 				}
 			}
