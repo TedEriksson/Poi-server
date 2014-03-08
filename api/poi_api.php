@@ -77,6 +77,7 @@
 		function __construct($id = null, $user = null) {
 			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
 			$this->id = $id;
+			$this->user = $user;
 		}
 
 		public function performRequest() {
