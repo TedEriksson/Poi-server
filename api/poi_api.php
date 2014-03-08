@@ -81,7 +81,10 @@
 		}
 
 		public function performRequest() {
-			if($user != null) return $this->poi->get(null, $this->user);
+			if($user != null) {
+				echo "user!";
+				return $this->poi->get(null, $this->user);
+			}
 			return $this->poi->get($this->id);
 		}
 
