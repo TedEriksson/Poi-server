@@ -10,10 +10,17 @@ class Poi {
 		$this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,TRUE);
 	}
 
-	public function get($id = null) {
+	public function get($id = null, $user = null) {
 		if($id == null) {
-			$statement = $this->pdo->prepare("SELECT * FROM points");
-			$statement->execute();
+			$get = "SELECT * FROM points";
+			if($user != null) {
+				$get .= " WHERE owner_id = :user";
+				$statement = $this->pdo->prepare($get);
+				$statement->execute(array('user' => $user));
+			} else {
+				$statement = $this->pdo->prepare($get);
+				$statement->execute();
+			}
 		} else {
 			$statement = $this->pdo->prepare("SELECT * FROM points WHERE point_id = :id");
 			$statement->execute(array('id' => $id));
