@@ -37,8 +37,8 @@
 					}
 				} else {
 					$this->request = new Insert($this->json);
-					if (isset($this->segs[1]) && is_array($this->segs[1])) {
-						$this->request = new Update();
+					if (isset($this->segs[1]) && isset($this->segs[1])) {
+						$this->request = new Update($this->json,$this->segs[1]);
 					} else if (isset($this->segs[1])) {
 						$this->request = new Insert($this->json);
 					}
@@ -84,17 +84,27 @@
 	}
 
 	class Update implements Request {
+		private $poi;
+		private $json = null;
+		private $id = null
+
+		function __construct($json, $id = null) {
+			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
+			$this->json = $json;
+			$this->id = $id;
+		}
+
 		public function getRequest() {
 			echo "UPDATE";
 		}
 
 		public function performRequest() {
-
+			return $this->poi->update($this->json,$this->id);
 		}
 	}
 
 	class Insert implements Request {
-
+		private $poi;
 		private $json = null;
 
 		function __construct($json) {

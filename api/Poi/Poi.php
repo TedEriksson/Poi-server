@@ -26,7 +26,14 @@ class Poi {
 		return json_encode($results);
 	}
 
-	public function update($vals, $token = null) {
+	public function update($vals, $id = null) {
+		$vals = json_decode($vals, true);
+
+		//Is Authenticated user
+		if(!isset($vals['point_id']) || !isset($vals["access_token"]) || !isset($vals["owner_id"]) || !$this->validateUser($vals["access_token"],$vals["owner_id"])) return -1;
+
+		unset($vals["access_token"]);
+
 		$updateString = "UPDATE points SET ";
 		$isFirst = true;
 		foreach ($vals as $key => $value) {
