@@ -96,7 +96,7 @@
 	class Update implements Request {
 		private $poi;
 		private $json = null;
-		private $id = null
+		private $id = null;
 
 		function __construct($json, $id = null) {
 			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);

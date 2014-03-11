@@ -41,11 +41,18 @@ class Poi {
 
 		unset($vals["access_token"]);
 
+		//Extract parts
+		$parts = null;
+		if(isset($vals["parts"])) {
+			$parts = $vals["parts"];
+			unset($vals["parts"]);
+		}
+
 		$updateString = "UPDATE points SET ";
 		$isFirst = true;
 		foreach ($vals as $key => $value) {
 			$pdoVals[":$key"] = $value;
-			if ($key != 'id') {
+			if ($key != 'point_id') {
 				if($isFirst) {
 					$updateString .= "$key=:$key";
 					$isFirst = false;
@@ -54,9 +61,55 @@ class Poi {
 				}
 			}
 		}
-		$updateString .= " WHERE id=:id";
+		$updateString .= " WHERE point_id=:point_id";
 		$statement = $this->pdo->prepare($updateString);
 		if($statement->execute($pdoVals)) {
+			if($parts != null) {
+				$error = false;
+				foreach ($parts as $part) {
+					$partString = "";
+					$pdoVals = array();
+					if(isset($part["part_id"]) && $part["part_id"] != -1) {
+						$partString = "UPDATE parts SET ";
+						$isFirst = true;
+						foreach ($vals as $key => $value) {
+							$pdoVals[":$key"] = $value;
+							if ($key != 'part_id') {
+								if($isFirst) {
+									$partString .= "$key=:$key";
+									$isFirst = false;
+								} else {
+									$partString .= ", $key=:$key";
+								}
+							}
+							$partString .= " WHERE point_id=:point_id";
+						}
+					} else {
+						$part["point_id"] = $id;
+						$partString = "INSERT INTO parts ";
+						$first = true;
+						$keys = "";
+						$values = "";
+						foreach ($part as $key => $value) {
+							if($first) {
+								$keys .= "$key";
+								$values .= ":$key";
+								$first = false;
+							} else {
+								$keys .= ", $key";
+								$values .= ", :$key";
+							}
+							$pdoVals[":$key"] = urldecode($value);
+						}
+						$partString .= "($keys) VALUES ($values)";
+					}
+					$statement = $this->pdo->prepare($partString);
+					if(!$statement->execute($pdoVals)) {
+						$error = true;
+					}
+				}
+			}
+			if ($error) return -1;
 			return true;
 		}
 	}
