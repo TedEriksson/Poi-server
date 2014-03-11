@@ -125,7 +125,7 @@
 
 		public function getRequest() {
 			echo "INSERT";
-		}
+		}	
 
 		public function performRequest() {
 			return $this->poi->insert($this->json);

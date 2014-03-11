@@ -69,7 +69,7 @@ class Poi {
 				foreach ($parts as $part) {
 					$partString = "";
 					$pdoVals = array();
-					if(isset($part["part_id"]) && $part["part_id"] != "-1") {
+					if(isset($part["part_id"]) && ($part["part_id"] != "-1" || $part["part_id"] != -1)) {
 						$partString = "UPDATE parts SET ";
 						$isFirst = true;
 						foreach ($vals as $key => $value) {
@@ -86,6 +86,7 @@ class Poi {
 						}
 					} else {
 						$part["point_id"] = $id;
+						if(isset($part["part_id"])) unset($part["part_id"]);
 						$partString = "INSERT INTO parts ";
 						$first = true;
 						$keys = "";
