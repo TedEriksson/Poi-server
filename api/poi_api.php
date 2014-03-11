@@ -29,12 +29,14 @@
 			$this->request = new NullRequest();
 
 			if (isset($this->segs[0]) && ($this->segs[0] == "points" || $this->segs[0] == "users") && !isset($this->segs[2])) {
+				echo $this->json;
 				if ($this->json == null) {
 					if (isset($this->segs[1]) || $this->segs[0] == "users") {
 						if($this->segs[0] == "users") {
 							if($this->segs[1] != null) 
 								$this->request = new Get(null, $this->segs[1]);
 						} else {
+							echo "get";
 							$this->request = new Get($this->segs[1]);
 						}
 					} else {
@@ -43,8 +45,10 @@
 				} else {
 					$this->request = new Insert($this->json);
 					if (isset($this->segs[1]) && isset($this->segs[1])) {
+						echo "update";
 						$this->request = new Update($this->json,$this->segs[1]);
 					} else if (isset($this->segs[1])) {
+						echo "insert";
 						$this->request = new Insert($this->json);
 					}
 				}
@@ -166,6 +170,6 @@
 		$api = new ApiParser($_SERVER['REQUEST_URI']);
 	}
 
-	//echo $api->getRequest();
-	echo $api->performRequest();
+	echo $api->getRequest();
+	//echo $api->performRequest();
 ?>
