@@ -244,9 +244,8 @@ class Poi {
 		$url = "https://www.googleapis.com/plus/v1/people/me?access_token=".$accessToken;
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$content = curl_exec($ch);
-		var_dump($content);
 		$array = json_decode($content, true);
 		return ($array["id"] == $owner_id);
 	}
