@@ -93,6 +93,7 @@
 			}
 		}
 		if ($response != -1) {
+			echo $response;
 			return 200;
 		}
 		return 404;
