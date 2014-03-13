@@ -52,7 +52,7 @@ class Poi {
 		$isFirst = true;
 		foreach ($vals as $key => $value) {
 			$pdoVals[":$key"] = $value;
-			if ($key != 'point_id') {
+			if ($key != 'point_id' && $key != 'owner_id') {
 				if($isFirst) {
 					$updateString .= "$key=:$key";
 					$isFirst = false;
@@ -61,7 +61,7 @@ class Poi {
 				}
 			}
 		}
-		$updateString .= " WHERE point_id=:point_id";
+		$updateString .= " WHERE point_id=:point_id AND owner_id=:owner_id";
 		$statement = $this->pdo->prepare($updateString);
 		if($statement->execute($pdoVals)) {
 			if($parts != null) {
