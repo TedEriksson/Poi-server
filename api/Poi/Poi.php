@@ -73,8 +73,8 @@ class Poi {
 						$partString = "UPDATE parts SET ";
 						$isFirst = true;
 						foreach ($part as $key => $value) {
-							$pdoVals[":$key"] = $value;
-							if ($key != 'part_id' || $key != 'point_id') {
+							if ($key != "part_id" || $key != "point_id") {
+								$pdoVals[":$key"] = $value;
 								if($isFirst) {
 									$partString .= "$key=:$key";
 									$isFirst = false;
