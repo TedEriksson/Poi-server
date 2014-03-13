@@ -84,7 +84,6 @@ class Poi {
 							}
 						}
 						$partString .= " WHERE part_id=:part_id AND point_id=:point_id";
-						die($partString);
 					} else {
 						$part["point_id"] = $vals["point_id"];
 						if(isset($part["part_id"])) unset($part["part_id"]);
