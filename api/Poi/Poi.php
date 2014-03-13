@@ -74,7 +74,7 @@ class Poi {
 						$isFirst = true;
 						foreach ($vals as $key => $value) {
 							$pdoVals[":$key"] = $value;
-							if ($key != 'part_id') {
+							if ($key != 'part_id' || $key != 'point_id') {
 								if($isFirst) {
 									$partString .= "$key=:$key";
 									$isFirst = false;
@@ -82,9 +82,9 @@ class Poi {
 									$partString .= ", $key=:$key";
 								}
 							}
-							$partString .= " WHERE point_id=:point_id";
 						}
-						die($partString);
+						$partString .= " WHERE part_id=:part_id AND point_id=:point_id";
+						
 					} else {
 						$part["point_id"] = $vals["point_id"];
 						if(isset($part["part_id"])) unset($part["part_id"]);
