@@ -70,7 +70,7 @@ class Poi {
 					$partString = "";
 					$pdoVals = array();
 					if(isset($part["part_id"]) && ($part["part_id"] != "-1" || $part["part_id"] != -1)) {
-						$pdoVals[":point_id"] = $vals['point_id'];
+						$pdoVals[":point_id"] = $vals["point_id"];
 						$partString = "UPDATE parts SET ";
 						$isFirst = true;
 						foreach ($part as $key => $value) {
@@ -85,6 +85,8 @@ class Poi {
 							}
 						}
 						$partString .= " WHERE part_id=:part_id AND point_id=:point_id";
+						var_dump($pdoVals);
+						die($partString);
 					} else {
 						$part["point_id"] = $vals["point_id"];
 						if(isset($part["part_id"])) unset($part["part_id"]);
@@ -112,7 +114,7 @@ class Poi {
 				}
 			}
 			if ($error) return -1;
-			return get($vals["point_id"]);
+			return $this->get($vals["point_id"]);
 		}
 	}
 
