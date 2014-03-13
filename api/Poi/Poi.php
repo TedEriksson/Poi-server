@@ -84,6 +84,7 @@ class Poi {
 							}
 							$partString .= " WHERE point_id=:point_id";
 						}
+						die($partString);
 					} else {
 						$part["point_id"] = $vals["point_id"];
 						if(isset($part["part_id"])) unset($part["part_id"]);
@@ -243,7 +244,7 @@ class Poi {
 		$url = "https://www.googleapis.com/plus/v1/people/me?access_token=".$accessToken;
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);
 		$content = curl_exec($ch);
 		var_dump($content);
 		$array = json_decode($content, true);
