@@ -46,7 +46,7 @@
 
 	function rest_put($request) {
 		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
-				$response = $poi->update(file_get_contents("php://input"));
+				$response = $this->poi->update(file_get_contents("php://input"));
 				if ($response != -1) {
 					echo $response;
 					return 200;
@@ -57,7 +57,7 @@
 
 	function rest_post($request) {
 		if($request[0] == POINTS && !isset($request[1])) {
-				$response = $poi->insert(file_get_contents("php://input"));
+				$response = $this->poi->insert(file_get_contents("php://input"));
 				if ($response != -1) {
 					echo $response;
 					return 201;
@@ -70,19 +70,19 @@
 		$response = -1;
 		if($request[0] == POINTS) {
 			if(isset($request[1]) && is_numeric($request[1])) {
-				$response = $poi->get($request[1]);
+				$response = $this->poi->get($request[1]);
 			} else {
 				if (!isset($request[1])) {
 					if(isset($_GET) && !empty($_GET)) {
-						$response = $poi->search($_GET);
+						$response = $this->poi->search($_GET);
 					} else {
-						$response = $poi->get();
+						$response = $this->poi->get();
 					}
 				}
 			}
 		} elseif ($request[0] == USERS) {
 			if(isset($request[1]) && is_numeric($request[1])) {
-				$response = $poi->get(null,$request[1]);
+				$response = $this->poi->get(null,$request[1]);
 			} else {
 				if (!isset($request[1])) {
 					$response = -1;
