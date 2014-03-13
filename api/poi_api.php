@@ -16,9 +16,7 @@
 
 	//Contains URI route
 	$request = array_values(array_diff(explode("/", $uri_parts[0]), array("","api","poi")));
-	//var_dump($segments);
-
-
+	
 	//Request method
 	$method = $_SERVER['REQUEST_METHOD'];
 

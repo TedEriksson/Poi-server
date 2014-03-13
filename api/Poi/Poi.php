@@ -85,7 +85,7 @@ class Poi {
 							$partString .= " WHERE point_id=:point_id";
 						}
 					} else {
-						$part["point_id"] = $id;
+						$part["point_id"] = $vals["point_id"];
 						if(isset($part["part_id"])) unset($part["part_id"]);
 						$partString = "INSERT INTO parts ";
 						$first = true;
@@ -111,7 +111,7 @@ class Poi {
 				}
 			}
 			if ($error) return -1;
-			return true;
+			return get($vals["point_id"]);
 		}
 	}
 
