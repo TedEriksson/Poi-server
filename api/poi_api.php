@@ -3,170 +3,103 @@
 	include 'Poi/Poi.php';
 	include 'connectinfo.php';
 
+	//Routes
+	const POINTS = "points";
+	const USERS = "users";
+
+
 	header('Content-Type: application/json');
 
-	/**
-	*	
-	*/
-	class ApiParser {
+	$poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
 
-		private $segs;
-		private $json = null;
-		private $id = null;
-		private $where = null;
-		private $request;
-		
-		function __construct($url, $json = null) {
-			$uri_parts = explode('?', $url, 2);
-			$url = $uri_parts[0];
-			$segs = explode("/", $url);
-			$segs = array_values(array_diff($segs, array("","api","poi")));
+	$uri_parts = explode('?', $_SERVER['REQUEST_URI'], 2);
 
-			$this->segs = $segs;
-			//if($this->isJson($json))
-				$this->json = $json;
-			$this->where = $_GET;
-			$this->request = new NullRequest();
+	//Contains URI route
+	$request = array_values(array_diff(explode("/", $uri_parts[0]), array("","api","poi")));
+	//var_dump($segments);
 
-			if (isset($this->segs[0]) && ($this->segs[0] == "points" || $this->segs[0] == "users") && !isset($this->segs[2])) {
-				echo $this->json;
-				if ($this->json == null) {
-					if (isset($this->segs[1]) || $this->segs[0] == "users") {
-						if($this->segs[0] == "users") {
-							if($this->segs[1] != null) 
-								$this->request = new Get(null, $this->segs[1]);
-						} else {
-							$this->request = new Get($this->segs[1]);
-						}
+
+	//Request method
+	$method = $_SERVER['REQUEST_METHOD'];
+
+	$response_code = 200;
+
+	switch ($method) {
+		case 'PUT':
+			$response_code = rest_put($request);
+			break;
+		case 'POST':
+			$response_code = rest_post($request);  
+			break;
+		case 'GET':
+			$response_code = rest_get($request);  
+			break;
+		case 'DELETE':
+			$response_code = rest_delete($request);  
+			break;
+		default:
+			$response_code = rest_error($request);  
+			break;
+	}
+
+	http_response_code($response_code);
+
+	function rest_put($request) {
+		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
+				$response = $poi->update(file_get_contents("php://input"));
+				if ($response != -1) {
+					echo $response;
+					return 200;
+				}
+		}
+		return 404;
+	}
+
+	function rest_post($request) {
+		if($request[0] == POINTS && !isset($request[1])) {
+				$response = $poi->insert(file_get_contents("php://input"));
+				if ($response != -1) {
+					echo $response;
+					return 201;
+				}
+		}
+		return 404;
+	}
+
+	function rest_get($request) {
+		$response = -1;
+		if($request[0] == POINTS) {
+			if(isset($request[1]) && is_numeric($request[1])) {
+				$response = $poi->get($request[1]);
+			} else {
+				if (!isset($request[1])) {
+					if(isset($_GET) && !empty($_GET)) {
+						$response = $poi->search($_GET);
 					} else {
-						$this->request = new Search($this->where);
-					}
-				} else {
-					$this->request = new Insert($this->json);
-					if (isset($this->segs[1]) && isset($this->segs[1])) {
-						$this->request = new Update($this->json,$this->segs[1]);
-					} else if (isset($this->segs[1])) {
-						$this->request = new Insert($this->json);
+						$response = $poi->get();
 					}
 				}
 			}
-		}
-
-		function isJson($string) {
-			json_decode($string);
-			return (json_last_error() == JSON_ERROR_NONE);
-		}
-
-		function getrequest() {
-			$this->request->getrequest();
-		}
-
-		function performRequest() {
-			return $this->request->performRequest();
-		}
-	}
-
-	interface Request {
-		public function getRequest();
-		public function performRequest();
-	} 
-
-	class Get implements Request {
-		private $poi;
-		private $id = null;
-		private $user = null;
-
-		function __construct($id = null, $user = null) {
-			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
-			$this->id = $id;
-			$this->user = $user;
-		}
-
-		public function performRequest() {
-			if($this->user != null) {
-				return $this->poi->get(null, $this->user);
+		} elseif ($request[0] == USERS) {
+			if(isset($request[1]) && is_numeric($request[1])) {
+				$response = $poi->get(null,$request[1]);
+			} else {
+				if (!isset($request[1])) {
+					$response = -1;
+				}
 			}
-			return $this->poi->get($this->id);
 		}
-
-		public function getRequest() {
-			echo "GET";
+		if ($response != -1) {
+			return 200;
 		}
+		return 404;
 	}
 
-	class Update implements Request {
-		private $poi;
-		private $json = null;
-		private $id = null;
-
-		function __construct($json, $id = null) {
-			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
-			$this->json = $json;
-			$this->id = $id;
+	function rest_delete($request) {
+		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
+			echo "delete point";
+			//return 200;
 		}
-
-		public function getRequest() {
-			echo "UPDATE";
-		}
-
-		public function performRequest() {
-			return $this->poi->update($this->json,$this->id);
-		}
+		return 404;
 	}
-
-	class Insert implements Request {
-		private $poi;
-		private $json = null;
-
-		function __construct($json) {
-			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
-			$this->json = $json;
-		}
-
-		public function getRequest() {
-			echo "INSERT";
-		}	
-
-		public function performRequest() {
-			return $this->poi->insert($this->json);
-		}
-	}
-
-	class Search implements Request {
-
-		private $poi;
-		private $where = null;
-
-		function __construct($where) {
-			$this->poi = new Poi(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
-			$this->where = $where;
-		}
-
-		public function getRequest() {
-			echo "SEARCH";
-		}
-
-		public function performRequest() {
-			return $this->poi->search($this->where);
-		}
-	}
-
-	class NullRequest implements Request {
-		public function getRequest() {
-			echo "NULL REQUEST";
-		}
-
-		public function performRequest() {
-
-		}
-	}
-
-	if($post = file_get_contents("php://input")) {
-		$api = new ApiParser($_SERVER['REQUEST_URI'], $post);
-	} else {
-		$api = new ApiParser($_SERVER['REQUEST_URI']);
-	}
-
-	//echo $api->getRequest();
-	echo $api->performRequest();
 ?>
