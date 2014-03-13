@@ -70,6 +70,7 @@ class Poi {
 					$partString = "";
 					$pdoVals = array();
 					if(isset($part["part_id"]) && ($part["part_id"] != "-1" || $part["part_id"] != -1)) {
+						$pdoVals[":point_id"] = $vals['point_id'];
 						$partString = "UPDATE parts SET ";
 						$isFirst = true;
 						foreach ($part as $key => $value) {
