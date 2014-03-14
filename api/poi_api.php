@@ -90,6 +90,7 @@
 				}
 			}
 		}
+		echo $response;
 	}
 
 	function rest_delete($request) {
