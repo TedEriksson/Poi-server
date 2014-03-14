@@ -20,15 +20,15 @@ abstract class JsonErrorMessage {
 
 	public static function printError() {
 		$error = array();
-		$error['code'] = $this->_code;
-		$error['message'] = $this->_message;
+		$error['code'] = self::$_code;
+		$error['message'] = self::$_message;
 		return json_encode(array('error' => $error));
 	}
 }
 
 class Unauthorized extends JsonErrorMessage {
-	protected $_code = 400;
-	protected $_message = "Unauthorized. You are not allowed to view this";
+	protected static $_code = 400;
+	protected static $_message = "Unauthorized. You are not allowed to view this";
 }
 
 ?>

@@ -16,7 +16,7 @@ abstract class BaseDAO {
 		$this->dbConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES,TRUE);
 	}
 
-	public function fetch($value,$key) {
+	public function fetch($value,$key = null) {
 		if(is_null($key)) {
 			$key = $this->_primaryKey;
 		}
