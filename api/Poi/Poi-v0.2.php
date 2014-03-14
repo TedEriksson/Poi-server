@@ -6,7 +6,7 @@ class Poi {
 		$points = new pointsDAO(false);
 		$pointArray = array();
 		$pointArray[] = $points->getByPointID($pointID); 
-		return pointsArrayToJSON($pointArray);
+		return $this->pointsArrayToJSON($pointArray);
 	}
 
 	private function pointsArrayToJSON($arrayOfPoints) {
