@@ -90,11 +90,6 @@
 				}
 			}
 		}
-		if ($response != -1) {
-			echo $response;
-			return 200;
-		}
-		return 404;
 	}
 
 	function rest_delete($request) {

@@ -12,7 +12,7 @@ class Poi {
 	}
 
 	private function pointsArrayToJSON($arrayOfPoints) {
-		return json_encode(array("points" => $arrayOfPoints));
+		return json_encode(array("points" => $arrayOfPoints), JSON_PRETTY_PRINT);
 	}
 }
 
@@ -20,14 +20,15 @@ abstract class JsonErrorMessage {
 
 	public static function printError() {
 		$error = array();
-		$error['code'] = self::$_code;
-		$error['message'] = self::$_message;
-		return json_encode(array('error' => $error));
+		$error['code'] = static::$_code;
+		$error['message'] = static::$_message;
+		http_response_code(static::$_code);
+		echo json_encode(array('error' => $error), JSON_PRETTY_PRINT);
 	}
 }
 
 class Unauthorized extends JsonErrorMessage {
-	protected static $_code = 400;
+	protected static $_code = 403;
 	protected static $_message = "Unauthorized. You are not allowed to view this";
 }
 
