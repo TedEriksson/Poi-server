@@ -1,7 +1,7 @@
 <?php
 	error_reporting(E_ALL);
-	include 'Poi/Poi.php';
 	include 'connectinfo.php';
+	include 'Poi/Poi-v0.2.php';
 
 	//Routes
 	const POINTS = "points";
@@ -71,13 +71,13 @@
 		$response = -1;
 		if($request[0] == POINTS) {
 			if(isset($request[1]) && is_numeric($request[1])) {
-				$response = $poi->get($request[1]);
+				$response = $poi->getPoint($request[1]);
 			} else {
 				if (!isset($request[1])) {
 					if(isset($_GET) && !empty($_GET)) {
 						$response = $poi->search($_GET);
 					} else {
-						$response = $poi->get();
+						$response = $poi->getPoints();
 					}
 				}
 			}
