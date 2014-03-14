@@ -4,9 +4,7 @@ include 'DAO.php';
 class Poi {
 	public function getPoint($pointID) {
 		$points = new pointsDAO(false);
-		$pointArray = array();
-		$pointArray[] = $points->getByPointID($pointID); 
-		return $this->pointsArrayToJSON($pointArray);
+		return $this->pointsArrayToJSON($points->getByPointID($pointID));
 	}
 
 	private function pointsArrayToJSON($arrayOfPoints) {
