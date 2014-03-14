@@ -20,38 +20,37 @@
 	//Request method
 	$method = $_SERVER['REQUEST_METHOD'];
 
-	$response_code = 200;
-
 	switch ($method) {
 		case 'PUT':
-			$response_code = rest_put($request);
+			rest_put($request);
 			break;
 		case 'POST':
-			$response_code = rest_post($request);  
+			rest_post($request);  
 			break;
 		case 'GET':
-			$response_code = rest_get($request);  
+			rest_get($request);  
 			break;
 		case 'DELETE':
-			$response_code = rest_delete($request);  
+			rest_delete($request);  
 			break;
 		default:
-			$response_code = rest_error($request);  
+			rest_error($request);  
 			break;
 	}
-
-	http_response_code($response_code);
 
 	function rest_put($request) {
 		global $poi;
 		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
-				$response = $poi->update(file_get_contents("php://input"));
-				if ($response != -1) {
-					echo $response;
-					return 200;
-				}
+			$response = $poi->update(file_get_contents("php://input"));
+			if ($response > 0) {
+				echo $response;
+				return;
+			}
+			BadRequest::printError();
+			return;
 		}
-		return 404;
+		URIRequestError::printError();
+		exit();
 	}
 
 	function rest_post($request) {
@@ -63,15 +62,17 @@
 					return 201;
 				}
 		}
-		return 404;
+		URIRequestError::printError();
+		exit();
 	}
 
 	function rest_get($request) {
 		global $poi;
-		$response = -1;
+		$response = null;
 		if($request[0] == POINTS) {
 			if(isset($request[1]) && is_numeric($request[1])) {
-				$response = $poi->getPoint($request[1]);
+				if(!isset($request[2]))
+					$response = $poi->getPoint($request[1]);
 			} else {
 				if (!isset($request[1])) {
 					if(isset($_GET) && !empty($_GET)) {
@@ -89,6 +90,10 @@
 					$response = -1;
 				}
 			}
+		}
+		if(is_null($response)) {
+			URIRequestError::printError();
+			exit();
 		}
 		echo $response;
 	}

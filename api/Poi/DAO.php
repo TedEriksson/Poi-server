@@ -67,15 +67,21 @@ abstract class AuthDAO extends BaseDAO {
 	public function delete($id){}
 
 	private function authenticateUser($accessToken, $owner_id) {
+		if(is_null($accessToken) || is_null($owner_id))
+			return null;
 		$url = "https://www.googleapis.com/plus/v1/people/me?access_token=".$accessToken;
 		$ch = curl_init();
 		curl_setopt($ch,CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$content = curl_exec($ch);
 		$array = json_decode($content, true);
-		if ($array["id"] == $owner_id)
+		if (isset($array["id"]) && $array["id"] == $owner_id)
 			return $array["id"];
 		return null;
+	}
+
+	public isAuthenticated() {
+		return (is_null($this->authenticatedAs)) ? false : true;
 	}
 }
 
@@ -90,6 +96,12 @@ class pointsDAO extends AuthDAO {
 		return $this->fetch($pointID);
 	}
 
+	public function update($keyedUpdateObject) {
+		if($keyedUpdateObject['owner_id'] == $authenticatedAs)
+			return parent::update($keyedUpdateObject);
+		else
+			return 0;
+	}
 }
 
 ?>
