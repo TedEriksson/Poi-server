@@ -36,8 +36,13 @@ abstract class AuthDAO extends BaseDAO {
 
 	function __construct($auth = true, $userID = "", $authKey = "") {
 		parent::__construct();
-		if($auth)
+		if($auth) {
 			$this->authenticatedAs = authenticateUser($accessToken, $owner_id);
+			if(is_null($this->authenticatedAs)) {
+				Unauthorized::printError();
+				exit();
+			}
+		}
 	}
 
 	public function insert($keyedInsertObject) {}

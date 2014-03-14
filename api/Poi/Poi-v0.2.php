@@ -24,6 +24,7 @@ class Poi {
 			return $points->update($updateArray);
 		}
 		return NoAccessKey::printError();
+		exit();
 	}
 
 	private function pointsArrayToJSON($arrayOfPoints) {
