@@ -5,6 +5,7 @@ class Poi {
 	public function getPoint($pointID) {
 		$points = new pointsDAO(false);
 		$pointsArray = $points->getByPointID($pointID);
+		var_dump($pointsArray);
 		if(empty($pointsArray))
 			return PointNotFound::printError();
 		else
