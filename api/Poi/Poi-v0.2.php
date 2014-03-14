@@ -4,7 +4,11 @@ include 'DAO.php';
 class Poi {
 	public function getPoint($pointID) {
 		$points = new pointsDAO(false);
-		return $this->pointsArrayToJSON($points->getByPointID($pointID));
+		$pointsArray = $points->getByPointID($pointID);
+		if(empty($pointsArray))
+			return PointNotFound::printError();
+		else
+			return $this->pointsArrayToJSON();
 	}
 
 	public function getPoints() {
@@ -30,6 +34,11 @@ abstract class JsonErrorMessage {
 class Unauthorized extends JsonErrorMessage {
 	protected static $_code = 403;
 	protected static $_message = "Unauthorized. You are not allowed to view this";
+}
+
+class PointNotFound extends JsonErrorMessage {
+	protected static $_code = 404;
+	protected static $_message = "Point not found. There is no point with this ID.";
 }
 
 ?>
