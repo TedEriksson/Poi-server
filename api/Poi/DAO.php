@@ -80,7 +80,7 @@ abstract class AuthDAO extends BaseDAO {
 		return null;
 	}
 
-	public isAuthenticated() {
+	public function isAuthenticated() {
 		return (is_null($this->authenticatedAs)) ? false : true;
 	}
 }
