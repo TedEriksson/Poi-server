@@ -41,7 +41,7 @@
 	function rest_put($request) {
 		global $poi;
 		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
-			$response = $poi->update(file_get_contents("php://input"));
+			$response = $poi->updatePoint(file_get_contents("php://input"));
 			if ($response > 0) {
 				echo $response;
 				return;
