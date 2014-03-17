@@ -128,7 +128,7 @@ class pointsDAO extends AuthDAO {
 
 	public function insert($keyedInsertObject) {
 		if($this->isAuthenticated() && $this->_authenticatedAs == $keyedInsertObject['owner_id'])
-			return parent::update($keyedInsertObject);
+			return parent::insert($keyedInsertObject);
 		else
 			PointNotFound::printError();
 	}

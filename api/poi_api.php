@@ -50,9 +50,7 @@
 
 	function rest_post($request) {
 		global $poi;
-		echo "post";
 		if($request[0] == POINTS && !isset($request[1])) {
-			echo "insert";
 			echo $poi->insertPoint(file_get_contents("php://input"));
 			return;	
 		}
