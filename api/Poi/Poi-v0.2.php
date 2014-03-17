@@ -21,6 +21,7 @@ class Poi {
 	public function updatePoint($updateJson) {
 		$updateArray = json_decode($updateJson, true);
 		$partsArray = array();
+		$stats = array('points' => 0, 'parts' => 0, 'new_parts' => 0);
 		if(isset($updateArray['parts'])) {
 			$partsArray = $updateArray['parts'];
 			unset($updateArray['parts']);
@@ -33,12 +34,14 @@ class Poi {
 			foreach ($partsArray as $part) {
 				if($part['part_id'] == "-1") {
 					//Insert new point
+					$stats['new_parts']++;
 				} else {
 					//Update existing point
-					$parts->update($part);
+					$stats['parts'] += $parts->update($part);
 				}
 			}
-			return $points->update($updateArray);
+			$stats['points'] = $points->update($updateArray);
+			return json_encode($stats);
 		}
 		return NoAccessKey::printError();
 		exit();
