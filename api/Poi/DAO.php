@@ -102,6 +102,8 @@ class pointsDAO extends AuthDAO {
 	}
 
 	public function update($keyedUpdateObject) {
+		echo $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'];
+		echo $this->authenticatedAs;
 		if($this->isAuthenticated() && $this->authenticatedAs == $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'])
 			return parent::update($keyedUpdateObject);
 		else
