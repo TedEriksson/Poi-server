@@ -77,6 +77,11 @@ class PointNotFound extends JsonErrorMessage {
 	protected static $_message = "Point not found. There is no point with this ID.";
 }
 
+class PartNotFound extends JsonErrorMessage {
+	protected static $_code = 404;
+	protected static $_message = "Part not found. There is no part with this ID.";
+}
+
 class URIRequestError extends JsonErrorMessage {
 	protected static $_code = 404;
 	protected static $_message = "There was an error in your URI. The page you are looking for does not exist";
