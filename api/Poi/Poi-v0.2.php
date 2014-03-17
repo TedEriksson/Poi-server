@@ -63,7 +63,7 @@ class Poi {
 			$stats['point_id'] = $points->insert($insertArray);
 			
 			foreach ($partsArray as $part) {
-				unset("part_id");
+				if(isset($part['part_id'])) unset($part['part_id']);
 				$part['point_id'] = $stats['point_id'];
 				$stats['parts'][] = $parts->insert($part);
 			}
