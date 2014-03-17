@@ -6,7 +6,7 @@ class Poi {
 		$points = new pointsDAO(false);
 		$parts = new partsDAO(false);
 		$pointsArray = $points->getByPointID($pointID);
-		$pointsArray["parts"] = $parts->fetch($pointID, 'point_id')
+		$pointsArray["parts"] = $parts->fetch($pointID, 'point_id');
 
 		if(empty($pointsArray))
 			return PointNotFound::printError();
