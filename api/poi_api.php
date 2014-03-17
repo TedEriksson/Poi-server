@@ -51,11 +51,8 @@
 	function rest_post($request) {
 		global $poi;
 		if($request[0] == POINTS && !isset($request[1])) {
-				$response = $poi->insert(file_get_contents("php://input"));
-				if ($response != -1) {
-					echo $response;
-					return 201;
-				}
+			echo $poi->insertPoint(file_get_contents("php://input"));
+			return;	
 		}
 		URIRequestError::printError();
 		exit();
