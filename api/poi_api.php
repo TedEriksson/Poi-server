@@ -76,10 +76,11 @@
 			}
 		} elseif ($request[0] == USERS) {
 			if(isset($request[1]) && is_numeric($request[1])) {
-				$response = $poi->get(null,$request[1]);
+				echo $poi->getUsersPoints($request[1]);
+				return;
 			} else {
 				if (!isset($request[1])) {
-					$response = -1;
+					Unauthorized::printError();
 				}
 			}
 		}

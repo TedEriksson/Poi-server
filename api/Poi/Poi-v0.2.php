@@ -18,6 +18,15 @@ class Poi {
 		return Unauthorized::printError();
 	}
 
+	public function getUsersPoints($ownerID) {
+		$points = new pointsDAO(false);
+		$pointsArray = $points->fetch($ownerID,'owner_id');
+		if(empty($pointsArray))
+			return UserNotFound::printError();
+		else
+			return $this->pointsArrayToJSON($pointsArray);
+	}
+
 	public function updatePoint($updateJson) {
 		$updateArray = json_decode($updateJson, true);
 		$partsArray = array();
@@ -98,6 +107,11 @@ class Unauthorized extends JsonErrorMessage {
 class AuthError extends JsonErrorMessage {
 	protected static $_code = 403;
 	protected static $_message = "The credentials you provided were incorrect.";
+}
+
+class UserNotFound extends JsonErrorMessage {
+	protected static $_code = 404;
+	protected static $_message = "User not found. There is no user with this ID.";
 }
 
 class PointNotFound extends JsonErrorMessage {
