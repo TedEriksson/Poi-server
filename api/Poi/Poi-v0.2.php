@@ -48,7 +48,7 @@ class Poi {
 	}
 
 	public function insertPoint($insertJson) {
-		$insertArray = json_decode($insertJson);
+		$insertArray = json_decode($insertJson, true);
 		$partsArray = array();
 		$stats = array('type' => "Insert", 'parts' => array());
 		if(isset($insertArray['parts'])) {
