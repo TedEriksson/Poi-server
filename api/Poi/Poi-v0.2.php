@@ -49,6 +49,11 @@ class Unauthorized extends JsonErrorMessage {
 	protected static $_message = "Unauthorized. You are not allowed to view this";
 }
 
+class AuthError extends JsonErrorMessage {
+	protected static $_code = 403;
+	protected static $_message = "The credentials you provided were incorrect.";
+}
+
 class PointNotFound extends JsonErrorMessage {
 	protected static $_code = 404;
 	protected static $_message = "Point not found. There is no point with this ID.";

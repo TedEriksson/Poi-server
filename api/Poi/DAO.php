@@ -102,7 +102,10 @@ class pointsDAO extends AuthDAO {
 	}
 
 	public function update($keyedUpdateObject) {
-		return parent::update($keyedUpdateObject);
+		if($this->authenticatedAs == $keyedUpdateObject['owner_id'])
+			return parent::update($keyedUpdateObject);
+		else
+			PointNotFound::printError();
 	}
 }
 
