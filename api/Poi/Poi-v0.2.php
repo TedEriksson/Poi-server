@@ -32,9 +32,10 @@ class Poi {
 
 			foreach ($partsArray as $part) {
 				if($part['part_id'] == "-1") {
-
+					//Insert new point
 				} else {
-					echo $parts->getPartOwner($part['part_id']);
+					//Update existing point
+					$parts->update($part);
 				}
 			}
 			exit();

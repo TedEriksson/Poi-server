@@ -127,7 +127,7 @@ class partsDAO extends AuthDAO {
 	}
 
 	public function update($keyedUpdateObject) {
-		if($this->isAuthenticated() && $this->authenticatedAs == $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'])
+		if($this->isAuthenticated() && $this->authenticatedAs == $this->getPartOwner($keyedUpdateObject['part_id']))
 			return parent::update($keyedUpdateObject);
 		else
 			PointNotFound::printError();
