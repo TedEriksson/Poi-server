@@ -6,11 +6,11 @@ class Poi {
 		$points = new pointsDAO(false);
 		$parts = new partsDAO(false);
 		$pointsArray = $points->getByPointID($pointID);
-		$pointsArray[0]["parts"] = $parts->fetch($pointID, 'point_id');
 
 		if(empty($pointsArray))
 			return PointNotFound::printError();
 		else
+			$pointsArray[0]["parts"] = $parts->fetch($pointID, 'point_id');
 			return $this->pointsArrayToJSON($pointsArray);
 	}
 

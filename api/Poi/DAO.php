@@ -79,7 +79,8 @@ abstract class AuthDAO extends BaseDAO {
 
 		$sql .= implode(",", $updates);
 		$sql .= " WHERE {$this->_primaryKey}=:{$this->_primaryKey}";
-
+		var_dump($pdoValues);
+		exit();
 		$statement = $this->dbConnection->prepare($sql);
 		$statement->execute($pdoValues);
 		return $statement->rowCount();
@@ -159,6 +160,8 @@ class partsDAO extends AuthDAO {
 	public function insert($keyedInsertObject) {
 		if(isset($keyedInsertObject['part_id'])) unset($keyedInsertObject['part_id']);
 		$points = new pointsDAO(false);
+		echo $points->getByPointID($keyedInsertObject['point_id'])[0]['owner_id'];
+		exit();
 		if($this->isAuthenticated() && $this->_authenticatedAs == $points->getByPointID($keyedInsertObject['point_id'])[0]['owner_id'])
 			return parent::insert($keyedInsertObject);
 		else
