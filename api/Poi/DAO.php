@@ -57,7 +57,9 @@ abstract class AuthDAO extends BaseDAO {
 		$keys = implode(",", $keys);
 		$keyvalues = implode(",", $keyvalues);
 		$sql = "INSERT INTO {$this->_tableName} ({$keys}) VALUES ({$keyvalues})";
-
+		var_dump($pdoValues);
+		echo $sql;
+		exit();
 		$statement = $this->dbConnection->prepare($sql);
 		$statement->execute($pdoValues);
 		return $this->pdo->lastInsertId($this->_primaryKey);
@@ -79,9 +81,7 @@ abstract class AuthDAO extends BaseDAO {
 
 		$sql .= implode(",", $updates);
 		$sql .= " WHERE {$this->_primaryKey}=:{$this->_primaryKey}";
-		var_dump($pdoValues);
-		echo $sql;
-		exit();
+
 		$statement = $this->dbConnection->prepare($sql);
 		$statement->execute($pdoValues);
 		return $statement->rowCount();
