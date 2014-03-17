@@ -5,7 +5,7 @@
 */
 abstract class BaseDAO {
 
-	private $dbConnection;
+	protected $dbConnection;
 
 	function __construct() {
 		$this->connectToDB(DATABASE_HOSTNAME,DATABASE_DATABASE,DATABASE_USER,DATABASE_PASSWORD);
