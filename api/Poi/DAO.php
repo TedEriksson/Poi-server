@@ -80,6 +80,7 @@ abstract class AuthDAO extends BaseDAO {
 		$sql .= implode(",", $updates);
 		$sql .= " WHERE {$this->_primaryKey}=:{$this->_primaryKey}";
 		var_dump($pdoValues);
+		echo $sql;
 		exit();
 		$statement = $this->dbConnection->prepare($sql);
 		$statement->execute($pdoValues);
