@@ -34,7 +34,7 @@ abstract class AuthDAO extends BaseDAO {
 	//The google user ID. If null, the user is not authenticated.
 	private $authenticatedAs = null;
 
-	function __construct($auth = true, $userID = "", $authKey = "") {
+	function __construct($auth = true, $accessToken = "", $owner_id = "") {
 		parent::__construct();
 		if($auth) {
 			$this->authenticatedAs = $this->authenticateUser($accessToken, $owner_id);

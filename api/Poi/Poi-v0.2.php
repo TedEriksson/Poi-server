@@ -19,7 +19,7 @@ class Poi {
 	public function updatePoint($updateJson) {
 		$updateArray = json_decode($updateJson, true);
 		if(isset($updateArray['access_token'])) {
-			$points = new pointsDAO(false,$updateArray['owner_id'],$updateArray['access_token']);
+			$points = new pointsDAO(true,$updateArray['access_token'],$updateArray['owner_id']);
 			unset($updateArray['access_token']);
 			return $points->update($updateArray);
 		}
