@@ -41,7 +41,7 @@ class Poi {
 			unset($updateArray['access_token']);
 
 			foreach ($partsArray as $part) {
-				if($part['part_id'] == "-1") {
+				if($part['part_id'] == "-1" || $part['part_id'] == -1) {
 					//Insert new point
 					$part['point_id'] = $updateArray['point_id'];
 					$stats['new_parts'] += $parts->insert($part);
