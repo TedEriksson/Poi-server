@@ -158,8 +158,7 @@ class partsDAO extends AuthDAO {
 	public function insert($keyedInsertObject) {
 		if(isset($keyedInsertObject['part_id'])) unset($keyedInsertObject['part_id']);
 		$points = new pointsDAO(false);
-		echo $points->getByPointID($keyedInsertObject['point_id'])[0]['owner_id'];
-		exit();
+
 		if($this->isAuthenticated() && $this->_authenticatedAs == $points->getByPointID($keyedInsertObject['point_id'])[0]['owner_id'])
 			return parent::insert($keyedInsertObject);
 		else
