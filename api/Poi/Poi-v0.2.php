@@ -44,7 +44,7 @@ class Poi {
 				if($part['part_id'] == "-1" || $part['part_id'] == -1) {
 					//Insert new point
 					$part['point_id'] = $updateArray['point_id'];
-					$stats['new_parts'] += $parts->insert($part);
+					$stats['new_parts'][] = $parts->insert($part);
 				} else {
 					//Update existing point
 					$stats['parts'] += $parts->update($part);
@@ -74,7 +74,7 @@ class Poi {
 			
 			foreach ($partsArray as $part) {
 				$part['point_id'] = $stats['point_id'];
-				$stats['parts'][] = $parts->insert($part);
+				$stats['new_parts'][] = $parts->insert($part);
 			}
 			
 			return json_encode($stats);
