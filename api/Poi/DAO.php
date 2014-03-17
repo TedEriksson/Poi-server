@@ -59,7 +59,7 @@ abstract class AuthDAO extends BaseDAO {
 		$sql = "INSERT INTO {$this->_tableName} ({$keys}) VALUES ({$keyvalues})";
 		$statement = $this->dbConnection->prepare($sql);
 		$statement->execute($pdoValues);
-		return $this->pdo->lastInsertId($this->_primaryKey);
+		return $this->dbConnection->lastInsertId($this->_primaryKey);
 	}
 	
 	/**
