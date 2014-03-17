@@ -18,9 +18,19 @@ class Poi {
 
 	public function updatePoint($updateJson) {
 		$updateArray = json_decode($updateJson, true);
+		$partsArray = array();
+		if(isset($updateArray['parts'])) {
+			$partsArray = $updateArray['parts'];
+			unset($updateArray['parts']);
+		}
 		if(isset($updateArray['access_token'])) {
 			$points = new pointsDAO(true,$updateArray['access_token'],$updateArray['owner_id']);
+			$parts = new partsDAO(true,$updateArray['access_token'],$updateArray['owner_id']);
 			unset($updateArray['access_token']);
+			foreach ($partsArray as $part) {
+				echo $parts->getPartOwner($part['point_id']);
+			}
+			exit();
 			return $points->update($updateArray);
 		}
 		return NoAccessKey::printError();
@@ -72,5 +82,10 @@ class NoAccessKey extends JsonErrorMessage {
 class BadRequest extends JsonErrorMessage {
 	protected static $_code = 400;
 	protected static $_message = "Your request is malformed.";
+}
+
+class NothingChanged extends JsonErrorMessage {
+	protected static $_code = 200;
+	protected static $_message = "Your request was correct, but nothing was changed.";
 }
 ?>

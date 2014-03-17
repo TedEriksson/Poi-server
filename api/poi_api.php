@@ -43,7 +43,7 @@
 		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
 			$response = $poi->updatePoint(file_get_contents("php://input"));
 			if ($response > 0) {
-				echo $response;
+				echo json_encode(array("rows_updated" => $response));
 				return;
 			}
 			BadRequest::printError();

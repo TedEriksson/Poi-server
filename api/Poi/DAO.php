@@ -102,8 +102,31 @@ class pointsDAO extends AuthDAO {
 	}
 
 	public function update($keyedUpdateObject) {
-		echo $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'];
-		echo $this->authenticatedAs;
+		if($this->isAuthenticated() && $this->authenticatedAs == $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'])
+			return parent::update($keyedUpdateObject);
+		else
+			PointNotFound::printError();
+	}
+}
+
+/**
+* DAO for the Parts table.
+*/
+class partsDAO extends AuthDAO {
+	protected $_tableName = "parts";
+	protected $_primaryKey = "part_id";
+
+	public function getByPartID($partID) {
+		return $this->fetch($partID);
+	}
+
+	public function getPartOwner($partID) {
+		$statement = $this->dbConnection->prepare("SELECT owner_id FROM {$this->_tableName} INNER JOIN 'points' ON {$this->_tableName}.point_id=points.point_id WHERE {$key}=:{$key}");
+		$statement->execute(array(":{$key}" => $value));
+		return $statement->fetchAll(PDO::FETCH_ASSOC)[0]['owner_id'];
+	}
+
+	public function update($keyedUpdateObject) {
 		if($this->isAuthenticated() && $this->authenticatedAs == $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'])
 			return parent::update($keyedUpdateObject);
 		else
