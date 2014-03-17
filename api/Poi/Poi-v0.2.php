@@ -38,7 +38,6 @@ class Poi {
 					$parts->update($part);
 				}
 			}
-			exit();
 			return $points->update($updateArray);
 		}
 		return NoAccessKey::printError();
