@@ -29,10 +29,13 @@ class Poi {
 			$points = new pointsDAO(true,$updateArray['access_token'],$updateArray['owner_id']);
 			$parts = new partsDAO(true,$updateArray['access_token'],$updateArray['owner_id']);
 			unset($updateArray['access_token']);
-			// var_dump($partsArray);
+
 			foreach ($partsArray as $part) {
-				var_dump($part);
-				echo $parts->getPartOwner($part['point_id']);
+				if($part['part_id'] == "-1") {
+
+				} else {
+					echo $parts->getPartOwner($part['part_id']);
+				}
 			}
 			exit();
 			return $points->update($updateArray);
