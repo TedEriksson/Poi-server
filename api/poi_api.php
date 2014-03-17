@@ -41,12 +41,7 @@
 	function rest_put($request) {
 		global $poi;
 		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
-			$response = $poi->updatePoint(file_get_contents("php://input"));
-			if ($response > 0) {
-				echo json_encode(array("rows_updated" => $response));
-				return;
-			}
-			BadRequest::printError();
+			echo $poi->updatePoint(file_get_contents("php://input"));
 			return;
 		}
 		URIRequestError::printError();
