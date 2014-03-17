@@ -19,7 +19,7 @@ class Poi {
 	public function updatePoint($updateJson) {
 		$updateArray = json_decode($updateJson, true);
 		if(isset($updateArray['access_token'])) {
-			$points = new pointsDAO(true,$updateArray['owner_id'],$updateArray['access_token']);
+			$points = new pointsDAO(false,$updateArray['owner_id'],$updateArray['access_token']);
 			unset($updateArray['access_token']);
 			return $points->update($updateArray);
 		}
@@ -40,6 +40,7 @@ abstract class JsonErrorMessage {
 		$error['message'] = static::$_message;
 		http_response_code(static::$_code);
 		echo json_encode(array('error' => $error), JSON_PRETTY_PRINT);
+		exit();
 	}
 }
 
