@@ -16,8 +16,8 @@ class Poi {
 		return Unauthorized::printError();
 	}
 
-	public function updatePoint($Updatejson) {
-		$updateArray = json_decode($Updatejson, true);
+	public function updatePoint($updateJson) {
+		$updateArray = json_decode($updateJson, true);
 		if(isset($updateArray['access_token'])) {
 			$points = new pointsDAO(true,$updateArray['owner_id'],$updateArray['access_token']);
 			unset($updateArray['access_token']);
