@@ -43,7 +43,8 @@ class Poi {
 			foreach ($partsArray as $part) {
 				if($part['part_id'] == "-1") {
 					//Insert new point
-					$stats['new_parts']++;
+					$part['point_id'] = $updateArray['point_id'];
+					$stats['new_parts'] += $parts->insert($part);
 				} else {
 					//Update existing point
 					$stats['parts'] += $parts->update($part);
