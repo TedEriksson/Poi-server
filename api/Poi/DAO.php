@@ -121,7 +121,7 @@ class partsDAO extends AuthDAO {
 	}
 
 	public function getPartOwner($partID) {
-		$statement = $this->dbConnection->prepare("SELECT owner_id FROM {$this->_tableName} INNER JOIN 'points' ON {$this->_tableName}.point_id=points.point_id WHERE {$key}=:{$key}");
+		$statement = $this->dbConnection->prepare("SELECT owner_id FROM {$this->_tableName} INNER JOIN points ON {$this->_tableName}.point_id=points.point_id WHERE {$key}=:{$key}");
 		$statement->execute(array(":{$key}" => $value));
 		return $statement->fetchAll(PDO::FETCH_ASSOC)[0]['owner_id'];
 	}
