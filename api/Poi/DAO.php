@@ -32,20 +32,36 @@ abstract class BaseDAO {
 */
 abstract class AuthDAO extends BaseDAO {
 	//The google user ID. If null, the user is not authenticated.
-	protected $authenticatedAs = null;
+	protected $_authenticatedAs = null;
 
 	function __construct($auth = true, $accessToken = "", $owner_id = "") {
 		parent::__construct();
 		if($auth) {
-			$this->authenticatedAs = $this->authenticateUser($accessToken, $owner_id);
-			if(is_null($this->authenticatedAs)) {
+			$this->_authenticatedAs = $this->authenticateUser($accessToken, $owner_id);
+			if(is_null($this->_authenticatedAs)) {
 				Unauthorized::printError();
 				exit();
 			}
 		}
 	}
 
-	public function insert($keyedInsertObject) {}
+	public function insert($keyedInsertObject) {
+		$pdoValues = array();
+		$keys = array();
+		$keyvalues = array();
+		foreach ($keyedInsertObject as $key => $value) {
+			$pdoValues[":{$key}"] = $value;
+			$keys[] = $key;
+			$keyvalues[] = ":{$key}";
+		}
+		$keys = implode(",", $keys);
+		$keyvalues = implode(",", $keyvalues);
+		$sql = "INSERT INTO {$this->_tableName} ({$keys}) VALUES ({$keyvalues})";
+
+		$statement = $this->dbConnection->prepare($sql);
+		$statement->execute($pdoValues);
+		return $this->pdo->lastInsertId($this->_primaryKey);
+	}
 	
 	/**
 	* updates table in database.
@@ -86,7 +102,7 @@ abstract class AuthDAO extends BaseDAO {
 	}
 
 	public function isAuthenticated() {
-		return (is_null($this->authenticatedAs)) ? false : true;
+		return (is_null($this->_authenticatedAs)) ? false : true;
 	}
 }
 
@@ -102,8 +118,15 @@ class pointsDAO extends AuthDAO {
 	}
 
 	public function update($keyedUpdateObject) {
-		if($this->isAuthenticated() && $this->authenticatedAs == $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'])
+		if($this->isAuthenticated() && $this->_authenticatedAs == $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'])
 			return parent::update($keyedUpdateObject);
+		else
+			PointNotFound::printError();
+	}
+
+	public function insert($keyedInsertObject) {
+		if($this->isAuthenticated() && $this->_authenticatedAs == $keyedInsertObject['owner_id'])
+			return parent::update($keyedInsertObject);
 		else
 			PointNotFound::printError();
 	}
@@ -127,8 +150,15 @@ class partsDAO extends AuthDAO {
 	}
 
 	public function update($keyedUpdateObject) {
-		if($this->isAuthenticated() && $this->authenticatedAs == $this->getPartOwner($keyedUpdateObject['part_id']))
+		if($this->isAuthenticated() && $this->_authenticatedAs == $this->getPartOwner($keyedUpdateObject['part_id']))
 			return parent::update($keyedUpdateObject);
+		else
+			PartNotFound::printError();
+	}
+
+	public function insert($keyedInsertObject) {
+		if($this->isAuthenticated() && $this->_authenticatedAs == $this->getPartOwner($keyedInsertObject['part_id']))
+			return parent::insert($keyedInsertObject);
 		else
 			PartNotFound::printError();
 	}

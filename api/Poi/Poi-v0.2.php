@@ -21,7 +21,7 @@ class Poi {
 	public function updatePoint($updateJson) {
 		$updateArray = json_decode($updateJson, true);
 		$partsArray = array();
-		$stats = array('points' => 0, 'parts' => 0, 'new_parts' => 0);
+		$stats = array('type' => "Update", 'points' => 0, 'parts' => 0, 'new_parts' => 0);
 		if(isset($updateArray['parts'])) {
 			$partsArray = $updateArray['parts'];
 			unset($updateArray['parts']);
@@ -41,6 +41,33 @@ class Poi {
 				}
 			}
 			$stats['points'] = $points->update($updateArray);
+			return json_encode($stats);
+		}
+		return NoAccessKey::printError();
+		exit();
+	}
+
+	public function insertPoint($insertJson) {
+		$insertArray = json_decode($insertJson);
+		$partsArray = array();
+		$stats = array('type' => "Insert", 'parts' => array());
+		if(isset($insertArray['parts'])) {
+			$partsArray = $insertArray['parts'];
+			unset($insertArray['parts']);
+		}
+		if(isset($insertArray['access_token'])) {
+			$points = new pointsDAO(true,$insertArray['access_token'],$insertArray['owner_id']);
+			$parts = new partsDAO(true,$insertArray['access_token'],$insertArray['owner_id']);
+			unset($insertArray['access_token']);
+
+			$stats['point_id'] = $points->insert($insertArray);
+			
+			foreach ($partsArray as $part) {
+				unset("part_id");
+				$part['point_id'] = $stats['point_id'];
+				$stats['parts'][] = $parts->insert($part);
+			}
+			
 			return json_encode($stats);
 		}
 		return NoAccessKey::printError();
