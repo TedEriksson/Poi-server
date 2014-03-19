@@ -95,18 +95,16 @@ class Poi {
 			foreach ($parts as $key) {
 				$this->deletePart($key['part_id'], $credentials);
 			}
-			$points->delete($credentialsArray['point_id']);
+			return $points->delete($credentialsArray['point_id']);
 		}
 		return NoAccessKey::printError();
 	}
 
 	public function deletePart($partID, $credentials) {
 		$credentialsArray = json_decode($credentials, true);
-		var_dump($credentialsArray);
-		die();
 		if(isset($credentialsArray['access_token'])) {
 			$parts = new partsDAO(true,$credentialsArray['access_token'],$credentialsArray['owner_id']);
-			$parts->delete($partID);
+			return $parts->delete($partID);
 		}
 		return NoAccessKey::printError();	
 	}
