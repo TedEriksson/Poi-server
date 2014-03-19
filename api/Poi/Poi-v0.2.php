@@ -91,7 +91,7 @@ class Poi {
 			if(empty($points)) {
 				PointNotFound::printError();
 			}
-			var_dump($parts);
+			var_dump($points);
 			die();
 			$parts = $points[0]['parts'];
 			foreach ($parts as $key) {
