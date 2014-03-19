@@ -91,6 +91,8 @@ class Poi {
 			if(empty($points)) {
 				PointNotFound::printError();
 			}
+			var_dump($parts);
+			die();
 			$parts = $points[0]['parts'];
 			foreach ($parts as $key) {
 				$this->deletePart($key['part_id'], $credentials);
