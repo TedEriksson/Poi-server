@@ -182,6 +182,7 @@ class partsDAO extends AuthDAO {
 	}
 
 	public function delete($value, $key = null) {
+		echo $value . "    ";
 		echo $this->getPartOwner($value);
 		exit();
 		if($this->isAuthenticated() && $this->_authenticatedAs == $this->getPartOwner($value))
