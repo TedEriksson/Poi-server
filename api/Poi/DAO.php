@@ -88,7 +88,7 @@ abstract class AuthDAO extends BaseDAO {
 		if(is_null($key)) {
 			$key = $this->_primaryKey;
 		}
-		$sql = "DELETE FROM {$_tableName} WHERE {$key}=:{$key}";
+		$sql = "DELETE FROM {$this->_tableName} WHERE {$key}=:{$key}";
 		$statement = $this->dbConnection->prepare($sql);
 		$statement->execute(array(":{$key}" => $value));
 		return $statement->rowCount();
