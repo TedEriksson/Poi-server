@@ -84,7 +84,15 @@ abstract class AuthDAO extends BaseDAO {
 		return $statement->rowCount();
 	}
 
-	public function delete($id){}
+	public function delete($value, $key = null){
+		if(is_null($key)) {
+			$key = $this->_primaryKey;
+		}
+		$sql = "DELETE FROM {$_tableName} WHERE {$key}=:{$key}";
+		$statement = $this->dbConnection->prepare($sql);
+		$statement->execute(array(":{$key}" => $value));
+		return $statement->rowCount();
+	}
 
 	private function authenticateUser($accessToken, $owner_id) {
 		if(is_null($accessToken) || is_null($owner_id))
@@ -129,6 +137,14 @@ class pointsDAO extends AuthDAO {
 		else
 			PointNotFound::printError();
 	}
+
+	public function delete($value, $key = null) {
+		$point = $this->fetch($value)[0];
+		if($this->isAuthenticated() && $this->_authenticatedAs == $point['owner_id']) {
+			return parent::delete($value, $key);
+		} else
+			PointNotFound::printError();
+	}
 }
 
 /**
@@ -161,6 +177,13 @@ class partsDAO extends AuthDAO {
 
 		if($this->isAuthenticated() && $this->_authenticatedAs == $points->getByPointID($keyedInsertObject['point_id'])[0]['owner_id'])
 			return parent::insert($keyedInsertObject);
+		else
+			PartNotFound::printError();
+	}
+
+	public function delete($value, $key = null) {
+		if($this->isAuthenticated() && $this->_authenticatedAs == $this->getPartOwner($value))
+			return parent::delete($value, $key);
 		else
 			PartNotFound::printError();
 	}

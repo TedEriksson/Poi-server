@@ -83,6 +83,32 @@ class Poi {
 		exit();
 	}
 
+	public function deletePoint($pointID, $credentials) {
+		$credentialsArray = json_decode($credentials, true);
+		if(isset($credentialsArray['access_token'])) {
+			$points = new pointsDAO(true,$credentialsArray['access_token'],$credentialsArray['owner_id']);
+			$points = $points->fetch($pointID);
+			if(empty($points)) {
+				PointNotFound::printError();
+			}
+			$parts = $points[0]['parts'];
+			foreach ($parts as $key) {
+				$this->deletePart($key['part_id'], $credentials);
+			}
+			$points->delete($credentialsArray['point_id']);
+		}
+		return NoAccessKey::printError();
+	}
+
+	public function deletePart($partID, $credentials) {
+		$credentialsArray = json_decode($credentials, true);
+		if(isset($credentialsArray['access_token'])) {
+			$parts = new partsDAO(true,$credentialsArray['access_token'],$credentialsArray['owner_id']);
+			$parts->delete($partID);
+		}
+		return NoAccessKey::printError();	
+	}
+
 	private function pointsArrayToJSON($arrayOfPoints) {
 		return json_encode(array("points" => $arrayOfPoints), JSON_PRETTY_PRINT);
 	}

@@ -6,6 +6,7 @@
 	//Routes
 	const POINTS = "points";
 	const USERS = "users";
+	const PARTS = "parts";
 
 
 	header('Content-Type: application/json');
@@ -94,9 +95,15 @@
 	function rest_delete($request) {
 		global $poi;
 		if($request[0] == POINTS && isset($request[1]) && is_numeric($request[1])) {
-			echo "delete point";
-			//return 200;
+			if($request[2] == PARTS && isset($request[3]) && is_numeric($request[3])) {
+				echo $poi->deletePoint($request[3],file_get_contents("php://input"));
+				return;
+			} else {
+				echo $poi->deletePart($request[1],file_get_contents("php://input"));
+				return;
+			}
 		}
-		return 404;
+		URIRequestError::printError();
+		return;
 	}
 ?>
