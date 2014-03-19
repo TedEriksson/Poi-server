@@ -102,6 +102,8 @@ class Poi {
 
 	public function deletePart($partID, $credentials) {
 		$credentialsArray = json_decode($credentials, true);
+		var_dump($credentialsArray);
+		die();
 		if(isset($credentialsArray['access_token'])) {
 			$parts = new partsDAO(true,$credentialsArray['access_token'],$credentialsArray['owner_id']);
 			$parts->delete($partID);
