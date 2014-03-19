@@ -87,7 +87,7 @@ class Poi {
 		$credentialsArray = json_decode($credentials, true);
 		if(isset($credentialsArray['access_token'])) {
 			$points = new pointsDAO(true,$credentialsArray['access_token'],$credentialsArray['owner_id']);
-			$points = $points->fetch($pointID);
+			$points = $this->getPoint($pointID);
 			if(empty($points)) {
 				PointNotFound::printError();
 			}
