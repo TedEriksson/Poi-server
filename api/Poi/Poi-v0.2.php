@@ -14,6 +14,14 @@ class Poi {
 			return $this->pointsArrayToJSON($pointsArray);
 	}
 
+	public function search($getRequest) {
+		if(isset($getRequest['latitude']) && isset($getRequest['longitude']) && isset($getRequest['radius'])) {
+			$points = new pointsDAO(false);
+			return $this->pointsArrayToJSON($points->search($getRequest['latitude'],$getRequest['longitude'],$getRequest['radius']));
+		}
+		URIRequestError::printError();
+	}
+
 	public function getPoints() {
 		return Unauthorized::printError();
 	}

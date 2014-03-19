@@ -124,6 +124,13 @@ class pointsDAO extends AuthDAO {
 		return $this->fetch($pointID);
 	}
 
+	public function getWithinRadius($lat, $lng, $rad) {
+		$sql = "SELECT * FROM {$this->_tableName}  HAVING ( 6371 * acos( cos( radians(:clat) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(:clng) ) + sin( radians(:clat) ) * sin( radians( latitude ) ) ) ) < :rad";
+		$statement = $this->dbConnection->prepare($sql);
+		$statement->execute(array(":clat" => $lat, ":clng" => $lng, ":rad" => $rad));
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 	public function update($keyedUpdateObject) {
 		if($this->isAuthenticated() && $this->_authenticatedAs == $this->fetch($keyedUpdateObject['point_id'])[0]['owner_id'])
 			return parent::update($keyedUpdateObject);
