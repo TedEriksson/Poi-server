@@ -140,7 +140,6 @@ class pointsDAO extends AuthDAO {
 
 	public function delete($value, $key = null) {
 		$point = $this->fetch($value)[0];
-		die($point['owner_id']);
 		if($this->isAuthenticated() && $this->_authenticatedAs == $point['owner_id']) {
 			return parent::delete($value, $key);
 		} else
@@ -183,6 +182,8 @@ class partsDAO extends AuthDAO {
 	}
 
 	public function delete($value, $key = null) {
+		echo $this->getPartOwner($value);
+		exit();
 		if($this->isAuthenticated() && $this->_authenticatedAs == $this->getPartOwner($value))
 			return parent::delete($value, $key);
 		else
