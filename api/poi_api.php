@@ -99,7 +99,7 @@
 				echo $poi->deletePart($request[3],file_get_contents("php://input"));
 				return;
 			} else {
-				echo $poi->deletePoint($request[3],file_get_contents("php://input"));
+				echo $poi->deletePoint($request[1],file_get_contents("php://input"));
 				return;
 			}
 		}
