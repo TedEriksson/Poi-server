@@ -95,7 +95,7 @@ class Poi {
 			foreach ($parts as $key) {
 				$this->deletePart($key['part_id'], $credentials);
 			}
-			return $points->delete($credentialsArray['point_id']);
+			return $points->delete($pointID);
 		}
 		return NoAccessKey::printError();
 	}
