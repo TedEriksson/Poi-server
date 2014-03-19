@@ -17,7 +17,7 @@ class Poi {
 	public function search($getRequest) {
 		if(isset($getRequest['latitude']) && isset($getRequest['longitude']) && isset($getRequest['radius'])) {
 			$points = new pointsDAO(false);
-			return $this->pointsArrayToJSON($points->search($getRequest['latitude'],$getRequest['longitude'],$getRequest['radius']));
+			return $this->pointsArrayToJSON($points->getWithinRadius($getRequest['latitude'],$getRequest['longitude'],$getRequest['radius']));
 		}
 		URIRequestError::printError();
 	}
